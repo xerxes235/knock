@@ -1885,7 +1885,7 @@ void sniff(u_char* arg, const struct pcap_pkthdr* hdr, const u_char* packet)
 int target_strcmp(char *ip, char *target) {
 	ip_literal_t *myip;
 	
-	return 1;
+	return 0;
 
 	if(target && !strcmp(ip, target))
 		return 0;
