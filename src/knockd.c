@@ -1805,7 +1805,7 @@ void sniff(u_char* arg, const struct pcap_pkthdr* hdr, const u_char* packet)
 	for(lp = attempts; lp; lp = lp->next) {
 		knocker_t *att = (knocker_t*)lp->data;
 		if(!strcmp(src_ip, att->src) &&
-		   !target_strcmp(dst_ip, att->door->target)) {
+		   ( strcmp(att->door->target, "any") == 0 || !target_strcmp(dst_ip, att->door->target) )) {
 			found_attempts = list_add(found_attempts, att);
 		}
 	}
