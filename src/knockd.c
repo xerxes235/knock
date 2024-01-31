@@ -1001,7 +1001,7 @@ void generate_pcap_filter()
 				buffer[0] = '\0';
 			}
 
-			if (strcmp(door->target, "any") == 0) {
+			if (door->target != NULL && strcmp(door->target, "any") == 0) {
 				bufsize = realloc_strcat(&buffer, "((", bufsize);
 				head_set = 0;
 			} else {
@@ -1886,7 +1886,7 @@ int target_strcmp(char *ip, char *target) {
 	ip_literal_t *myip;
 	
 	// override behavior: if target is set any, do not compare at all!
-	if (strcmp(target, "any") == 0)
+	if (target && strcmp(target, "any") == 0)
 		return 0;
 
 	if(target && !strcmp(ip, target))
