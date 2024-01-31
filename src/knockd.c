@@ -1885,7 +1885,9 @@ void sniff(u_char* arg, const struct pcap_pkthdr* hdr, const u_char* packet)
 int target_strcmp(char *ip, char *target) {
 	ip_literal_t *myip;
 	
-	return 0;
+	// override behavior: if target is set any, do not compare at all!
+	if (strcmp(target, "any") == 0)
+		return 0;
 
 	if(target && !strcmp(ip, target))
 		return 0;
