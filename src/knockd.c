@@ -1002,7 +1002,7 @@ void generate_pcap_filter()
 			}
 
 			if (strcmp(door->target, "any") == 0) {
-				bufsize = realloc_strcat(&buffer, "(", bufsize);
+				bufsize = realloc_strcat(&buffer, "((", bufsize);
 				head_set = 0;
 			} else {
 				/* accept only incoming packets */
