@@ -1001,21 +1001,26 @@ void generate_pcap_filter()
 				buffer[0] = '\0';
 			}
 
-			/* accept only incoming packets */
-			for(myip = myips; myip != NULL; myip = myip->next) {
-				if(myip->is_ipv6 != ipv6)
-					continue;
-				if(!head_set) {
-					bufsize = realloc_strcat(&buffer, "((dst host ", bufsize);
-					head_set = 1;
-				} else {
-					bufsize = realloc_strcat(&buffer, " or dst host ", bufsize);
+			if (strcmp(door->target, "any") == 0) {
+				bufsize = realloc_strcat(&buffer, "(", bufsize);
+				head_set = 0;
+			} else {
+				/* accept only incoming packets */
+				for(myip = myips; myip != NULL; myip = myip->next) {
+					if(myip->is_ipv6 != ipv6)
+						continue;
+					if(!head_set) {
+						bufsize = realloc_strcat(&buffer, "((dst host ", bufsize);
+						head_set = 1;
+					} else {
+						bufsize = realloc_strcat(&buffer, " or dst host ", bufsize);
+					}
+					bufsize = realloc_strcat(&buffer, door->target ? door->target : myip->value, bufsize);
 				}
-				bufsize = realloc_strcat(&buffer, door->target ? door->target : myip->value, bufsize);
-			}
 
-			bufsize = realloc_strcat(&buffer, ") and (", bufsize);
-			head_set = 0;
+				bufsize = realloc_strcat(&buffer, ") and (", bufsize);
+				head_set = 0;
+			}
 
 			/* generate filter for all TCP ports (i.e. "((tcp dst port 4000 or 4001 or 4002) and tcp[tcpflags] & tcp-syn != 0)" */
 			for(i = 0; i < door->seqcount; i++) {
